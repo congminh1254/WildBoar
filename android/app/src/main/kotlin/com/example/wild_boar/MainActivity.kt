@@ -1,4 +1,4 @@
-package com.example.wild_boar
+package pl.hackyeah.wildboar
 
 import io.flutter.embedding.android.FlutterActivity
 

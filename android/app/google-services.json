@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "159574744949",
+    "firebase_url": "https://wildboar-hackyeah.firebaseio.com",
+    "project_id": "wildboar-hackyeah",
+    "storage_bucket": "wildboar-hackyeah.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:159574744949:android:46a869b064a1a133a5bd3c",
+        "android_client_info": {
+          "package_name": "pl.hackyeah.wildboar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "159574744949-5fo6dr1jl1tp9qve36iq8r5ukph6aoke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXVa7fcJ6YKgapoOxuDNVzdtejMSiSI14"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "159574744949-5fo6dr1jl1tp9qve36iq8r5ukph6aoke.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "159574744949-e7cbkp355ktc4ddajikl430rlmvv79k2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "pl.hackyeah.wildboar"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
