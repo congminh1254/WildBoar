@@ -52,10 +52,10 @@ class _LoginPageState extends State<LoginPage>
   _submit() {
     AuthService.login(
       context,
-      loginEmailController.text.toString().trim(),
-      loginPasswordController.text.toString().trim(),
+      loginEmailController.text.toString(),
+      loginPasswordController.text.toString(),
     );
-    Future.delayed(const Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 1000), () {
       showInSnackBar('Wrong email or password');
     });
   }

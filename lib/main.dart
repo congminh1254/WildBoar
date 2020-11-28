@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       home: _getScreenId(),
       routes: {
         LoginPage.id: (context) => LoginPage(),
-        FeedScreen.id: (context) => HomeScreen(),
+        HomeScreen.id: (context) => HomeScreen(),
       },
     );
   }
