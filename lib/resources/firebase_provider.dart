@@ -108,13 +108,23 @@ class FirebaseProvider {
     return _firestore.collection("users").document(uid).updateData(map);
   }
 
-  Future<void> updateDetails(
-      String uid, String name, String bio, String email, String phone) async {
+  Future<void> updateDetails(String uid, String name, String phone) async {
     Map<String, dynamic> map = Map();
     map['displayName'] = name;
-    map['bio'] = bio;
-    map['email'] = email;
     map['phone'] = phone;
     return _firestore.collection("users").document(uid).updateData(map);
+  }
+
+  Future<FirebaseUser> getCurrentUser() async {
+    FirebaseUser currentUser;
+    currentUser = await _auth.currentUser();
+    print("EMAIL ID : ${currentUser.email}");
+    return currentUser;
+  }
+
+  Future<Users> retrieveUserDetails(FirebaseUser user) async {
+    DocumentSnapshot _documentSnapshot =
+        await _firestore.collection("users").document(user.uid).get();
+    return Users.fromMap(_documentSnapshot.data);
   }
 }
