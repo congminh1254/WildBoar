@@ -698,7 +698,7 @@ class _LoginPageState extends State<LoginPage>
                         _submit1();
                       } else {
                         showInSnackBar(
-                            "The name must be longer than 3 character, Email must be valid, Password must be longer than 3 characters and enter again correctly");
+                            "The name must be longer than 6 character, Email must be valid, Password must be longer than 3 characters and enter again correctly");
                       }
                     }),
               ),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wild_boar/screens/FeedScreen.dart';
+import 'package:wild_boar/screens/HomeScreen.dart';
 import 'package:wild_boar/screens/LoginScreen.dart';
 
 import 'util/const.dart';
@@ -34,7 +35,7 @@ class _MyAppState extends State<MyApp> {
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData) {
-          return FeedScreen();
+          return HomeScreen();
         } else {
           return LoginPage();
         }
@@ -57,7 +58,7 @@ class _MyAppState extends State<MyApp> {
       home: _getScreenId(),
       routes: {
         LoginPage.id: (context) => LoginPage(),
-        FeedScreen.id: (context) => FeedScreen(),
+        FeedScreen.id: (context) => HomeScreen(),
       },
     );
   }

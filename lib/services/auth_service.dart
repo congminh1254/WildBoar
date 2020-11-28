@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wild_boar/screens/FeedScreen.dart';
+import 'package:wild_boar/screens/HomeScreen.dart';
 import 'package:wild_boar/screens/LoginScreen.dart';
 
 class AuthService {
@@ -43,7 +44,7 @@ class AuthService {
   static void login(BuildContext context, String email, String password) async {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Navigator.pushReplacementNamed(context, FeedScreen.id);
+      Navigator.pushReplacementNamed(context, HomeScreen.id);
     } catch (e) {
       print(e);
     }

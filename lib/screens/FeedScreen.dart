@@ -9,6 +9,17 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: new Text("New Feed",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.black,
+            )),
+        backgroundColor: new Color(0xfff8faf8),
+        centerTitle: true,
+        elevation: 1.0,
+      ),
+    );
   }
 }
