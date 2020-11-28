@@ -87,17 +87,7 @@ class _LoginPageState extends State<LoginPage>
             height: MediaQuery.of(context).size.height >= 775.0
                 ? MediaQuery.of(context).size.height
                 : 775.0,
-            decoration: new BoxDecoration(
-              gradient: new LinearGradient(
-                  colors: [
-                    Colorss.loginGradientStart,
-                    Colorss.loginGradientEnd
-                  ],
-                  begin: const FractionalOffset(0.0, 0.0),
-                  end: const FractionalOffset(1.0, 1.0),
-                  stops: [0.0, 1.0],
-                  tileMode: TileMode.clamp),
-            ),
+            decoration: new BoxDecoration(color: Colors.lightGreen[700]),
             child: Column(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
@@ -339,15 +329,7 @@ class _LoginPageState extends State<LoginPage>
                       blurRadius: 20.0,
                     ),
                   ],
-                  gradient: new LinearGradient(
-                      colors: [
-                        Colorss.loginGradientEnd,
-                        Colorss.loginGradientStart
-                      ],
-                      begin: const FractionalOffset(0.2, 0.2),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp),
+                  color: Colors.white,
                 ),
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
@@ -359,7 +341,7 @@ class _LoginPageState extends State<LoginPage>
                       child: Text(
                         "LOGIN",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.lightGreen,
                             fontSize: 25.0,
                             fontFamily: "WorkSansBold"),
                       ),
@@ -650,29 +632,20 @@ class _LoginPageState extends State<LoginPage>
               Container(
                 margin: EdgeInsets.only(top: 340.0),
                 decoration: new BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
-                  boxShadow: <BoxShadow>[
-                    BoxShadow(
-                      color: Colorss.loginGradientStart,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                    BoxShadow(
-                      color: Colorss.loginGradientEnd,
-                      offset: Offset(1.0, 6.0),
-                      blurRadius: 20.0,
-                    ),
-                  ],
-                  gradient: new LinearGradient(
-                      colors: [
-                        Colorss.loginGradientEnd,
-                        Colorss.loginGradientStart
-                      ],
-                      begin: const FractionalOffset(0.2, 0.2),
-                      end: const FractionalOffset(1.0, 1.0),
-                      stops: [0.0, 1.0],
-                      tileMode: TileMode.clamp),
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                        color: Colorss.loginGradientStart,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0,
+                      ),
+                      BoxShadow(
+                        color: Colorss.loginGradientEnd,
+                        offset: Offset(1.0, 6.0),
+                        blurRadius: 20.0,
+                      ),
+                    ],
+                    color: Colors.white),
                 child: MaterialButton(
                     highlightColor: Colors.transparent,
                     splashColor: Colorss.loginGradientEnd,
@@ -683,7 +656,7 @@ class _LoginPageState extends State<LoginPage>
                       child: Text(
                         "SIGN UP",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.lightGreen,
                             fontSize: 25.0,
                             fontFamily: "WorkSansBold"),
                       ),

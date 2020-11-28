@@ -5,6 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:wild_boar/main.dart';
 import 'package:wild_boar/models/user.dart';
 import 'package:wild_boar/resources/repository.dart';
+import 'package:wild_boar/screens/HomeScreen.dart';
 import 'package:wild_boar/services/auth_service.dart';
 
 class ProFileScreen extends StatefulWidget {
@@ -86,27 +87,6 @@ class _ProFileScreenState extends State<ProFileScreen>
                     color: Colors.white,
                     child: new Column(
                       children: <Widget>[
-                        Padding(
-                            padding: EdgeInsets.only(left: 20.0, top: 20.0),
-                            child: new Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                new Icon(
-                                  Icons.arrow_back_ios,
-                                  color: Colors.black,
-                                  size: 22.0,
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: 25.0),
-                                  child: new Text('PROFILE',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                          fontFamily: 'sans-serif-light',
-                                          color: Colors.black)),
-                                )
-                              ],
-                            )),
                         Padding(
                           padding: EdgeInsets.only(top: 20.0),
                           child:
@@ -334,9 +314,10 @@ class _ProFileScreenState extends State<ProFileScreen>
                             _phoneController.text)
                         .then((v) {
                       Navigator.pop(context);
-                      // Navigator.push(context, MaterialPageRoute(
-                      //   builder: ((context) => InstaHomeScreen())
-                      // ));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => HomeScreen())));
                     });
                   });
                 },
