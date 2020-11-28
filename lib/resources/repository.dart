@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:wild_boar/models/user.dart';
 
 import 'package:wild_boar/resources/firebase_provider.dart';
 
@@ -19,6 +20,8 @@ class Repository {
 
   Future<void> signOut() => _firebaseProvider.signOut();
 
+  Future<FirebaseUser> getCurrentUser() => _firebaseProvider.getCurrentUser();
+
   Future<String> uploadImageToStorage(File imageFile) =>
       _firebaseProvider.uploadImageToStorage(imageFile);
 
@@ -28,9 +31,11 @@ class Repository {
   Future<void> updatePhoto(String photoUrl, String uid) =>
       _firebaseProvider.updatePhoto(photoUrl, uid);
 
-  Future<void> updateDetails(
-          String uid, String name, String bio, String email, String phone) =>
-      _firebaseProvider.updateDetails(uid, name, bio, email, phone);
+  Future<void> updateDetails(String uid, String name, String phone) =>
+      _firebaseProvider.updateDetails(uid, name, phone);
+
+  Future<Users> retrieveUserDetails(FirebaseUser user) =>
+      _firebaseProvider.retrieveUserDetails(user);
 
   //Future<List<DocumentSnapshot>> retrievePostByUID(String uid) => _firebaseProvider.retrievePostByUID(uid);
 
