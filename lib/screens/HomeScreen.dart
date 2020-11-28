@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:wild_boar/screens/FeedScreen.dart';
 import 'package:wild_boar/screens/ProfileScreen.dart';
 import 'package:wild_boar/screens/SendReportScreen.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
   static final String id = 'home_screen';
@@ -22,6 +23,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _pageController = PageController();
+    Permission.location.request();
   }
 
   @override
@@ -29,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: PageView(
         controller: _pageController,
+        physics: new NeverScrollableScrollPhysics(),
         children: <Widget>[
           FeedScreen(),
           SendReportScreen(),

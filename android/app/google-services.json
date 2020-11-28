@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "159574744949-mlc5s8eths0mgsl6j71iehesl1cpjv2t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.hackyeah.wildboar",
+            "certificate_hash": "f364c135f70cf942647c2d86156d557b77364bcc"
+          }
+        },
+        {
           "client_id": "159574744949-5fo6dr1jl1tp9qve36iq8r5ukph6aoke.apps.googleusercontent.com",
           "client_type": 3
         }
