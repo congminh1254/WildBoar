@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase/firebase.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:wild_boar/screens/FeedScreen.dart';
@@ -13,11 +12,11 @@ class AuthService {
   static void signUpUser(
       BuildContext context, String name, String email, String password) async {
     try {
-      UserCredential authResult = (await _auth.createUserWithEmailAndPassword(
+      AuthResult authResult = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
-      )) as UserCredential;
-      FirebaseUser signedInUser = authResult.user as FirebaseUser;
+      );
+      FirebaseUser signedInUser = authResult.user;
       if (signedInUser != null) {
         _firestore.collection('/users').document(signedInUser.uid).setData({
           'bio': '',
@@ -50,5 +49,3 @@ class AuthService {
     }
   }
 }
-
-class AuthResult {}
