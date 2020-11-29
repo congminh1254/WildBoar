@@ -45,7 +45,7 @@ class Repository {
           String status,
           String type,
           String handled,
-          String decription) =>
+          String description) =>
       _firebaseProvider.addReportToDb(
         currentUser,
         coordinate,
@@ -53,13 +53,17 @@ class Repository {
         status,
         type,
         handled,
-        decription,
+        description,
       );
   Future<Users> fetchUserDetailsById(String uid) =>
       _firebaseProvider.fetchUserDetailsById(uid);
 
   Future<List<String>> retrieveUserReport(String userId) =>
       _firebaseProvider.retrieveUserReport(userId);
+
   Future<List<DocumentSnapshot>> fetchReport(FirebaseUser user) =>
       _firebaseProvider.fetchReport(user);
+
+  Future<List<DocumentSnapshot>> fetchAllReport() =>
+      _firebaseProvider.fetchAllReport();
 }

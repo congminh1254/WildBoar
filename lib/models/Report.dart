@@ -7,7 +7,7 @@ class Report {
   String status;
   String type;
   String handled;
-  String decription;
+  String description;
   FieldValue time;
 
   Report({
@@ -17,7 +17,7 @@ class Report {
     this.status,
     this.type,
     this.handled,
-    this.decription,
+    this.description,
     this.time,
   });
 
@@ -29,7 +29,7 @@ class Report {
     data['status'] = report.status;
     data['type'] = report.type;
     data['handle'] = report.handled;
-    data['decription'] = report.decription;
+    data['description'] = report.description;
 
     data['time'] = report.time;
 
@@ -43,7 +43,7 @@ class Report {
     this.status = mapData['status'];
     this.type = mapData['type'];
     this.handled = mapData['handled'];
-    this.decription = mapData['decription'];
+    this.description = mapData['description'];
     this.time = mapData['time'];
   }
 }
