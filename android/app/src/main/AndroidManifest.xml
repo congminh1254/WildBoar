@@ -2,6 +2,9 @@
     package="pl.hackyeah.wildboar">
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
          In most cases you can leave this as-is, but you if you want to provide
@@ -10,10 +13,11 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="wild_boar"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:requestLegacyExternalStorage="true">
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyAy3HUG3f3xZq2XNQ8mjb24MQeQwE_tuzc"/>
-
+        
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

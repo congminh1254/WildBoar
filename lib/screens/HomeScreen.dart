@@ -60,20 +60,23 @@ class _HomeScreenState extends State<HomeScreen> {
         activeColor: Colors.black,
         items: [
           BottomNavigationBarItem(
+              label: "Home",
               icon: Icon(
-            Icons.home,
-            size: 32.0,
-          )),
+                Icons.home,
+                size: 32.0,
+              )),
           BottomNavigationBarItem(
+              label: "My report",
               icon: Icon(
-            Icons.drive_folder_upload,
-            size: 32.0,
-          )),
+                Icons.drive_folder_upload,
+                size: 32.0,
+              )),
           BottomNavigationBarItem(
+              label: "Profile",
               icon: Icon(
-            Icons.account_circle,
-            size: 32.0,
-          )),
+                Icons.account_circle,
+                size: 32.0,
+              )),
         ],
       ),
     );

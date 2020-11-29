@@ -10,7 +10,7 @@ class _SendReportScreenState extends State<SendReportScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: new Text("SendReport",
+        title: new Text("My Report",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,

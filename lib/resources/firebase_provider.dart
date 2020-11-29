@@ -15,7 +15,7 @@ class FirebaseProvider {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   StorageReference _storageReference;
 
-  Future<void> addDataToDb(FirebaseUser currentUser) async {
+  Future<Users> addDataToDb(FirebaseUser currentUser) async {
     print("Inside addDataToDb Method");
 
     /*_firestore
@@ -31,15 +31,18 @@ class FirebaseProvider {
         bio: '',
         posts: '0',
         phone: '');
-
+    if (user.email == null)
+      for (UserInfo info in currentUser.providerData)
+        if (info.email != null) user.email = info.email;
     //  Map<String, String> mapdata = Map<String, dynamic>();
 
     //  mapdata = user.toMap(user);
 
-    return _firestore
+    await _firestore
         .collection("users")
         .document(currentUser.uid)
         .setData(user.toMap(user));
+    return user;
   }
 
   Future<bool> authenticateUser(FirebaseUser user) async {
@@ -125,6 +128,7 @@ class FirebaseProvider {
   Future<Users> retrieveUserDetails(FirebaseUser user) async {
     DocumentSnapshot _documentSnapshot =
         await _firestore.collection("users").document(user.uid).get();
+    if (_documentSnapshot.data == null) return await addDataToDb(user);
     return Users.fromMap(_documentSnapshot.data);
   }
 }

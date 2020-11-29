@@ -60,5 +60,11 @@
 	<!-- Permission options for the `location` group -->
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>We need your location for the report only.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Upload some photos to your report.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Upload some photos to your report.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Upload some photos to your report.</string>
 </dict>
 </plist>
