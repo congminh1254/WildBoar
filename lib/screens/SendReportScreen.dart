@@ -17,8 +17,8 @@ class _SendReportScreenState extends State<SendReportScreen> {
 
   @override
   void initState() {
-    super.initState();
     getReport();
+    super.initState();
   }
 
   void getReport() async {
@@ -31,6 +31,7 @@ class _SendReportScreenState extends State<SendReportScreen> {
     listID = (await _repository.retrieveUserReport(currentUser.uid));
     print(listID.length);
     _future = _repository.fetchReport(currentUser);
+    setState(() {});
   }
 
   @override
@@ -46,7 +47,7 @@ class _SendReportScreenState extends State<SendReportScreen> {
         centerTitle: true,
         elevation: 1.0,
       ),
-      body: currentUser != null && listID.length > 0
+      body: (currentUser != null && listID.length > 0)
           ? Padding(
               padding: const EdgeInsets.only(top: 4.0),
               child: userReport(),
