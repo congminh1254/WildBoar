@@ -160,7 +160,7 @@ class FirebaseProvider {
     String status,
     String type,
     String handled,
-    String decription,
+    String description,
   ) async {
     List<String> images = new List<String>();
     try {
@@ -183,7 +183,7 @@ class FirebaseProvider {
         status: status,
         type: type,
         handled: handled,
-        decription: decription,
+        description: description,
         time: FieldValue.serverTimestamp());
 
     final collRef = Firestore.instance
@@ -216,6 +216,25 @@ class FirebaseProvider {
 
     for (int i = 0; i < querySnapshot.documents.length; i++) {
       list.add(querySnapshot.documents[i].documentID.toString());
+    }
+    return list;
+  }
+
+  Future<List<DocumentSnapshot>> fetchAllReport() async {
+    List<DocumentSnapshot> list = List<DocumentSnapshot>();
+    QuerySnapshot users = await _firestore.collection("users").getDocuments();
+    for (DocumentSnapshot doc in users.documents) {
+      QuerySnapshot postSnapshot = await _firestore
+          .collection("users")
+          .document(doc.documentID)
+          .collection("reports")
+          .getDocuments();
+      // postSnapshot.documents;
+      for (var i = 0; i < postSnapshot.documents.length; i++) {
+        print("dad : ${postSnapshot.documents[i].documentID}");
+        list.add(postSnapshot.documents[i]);
+        print("ads : ${list.length}");
+      }
     }
     return list;
   }

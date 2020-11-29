@@ -1,5 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 import 'dart:async';
+import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -20,6 +24,7 @@ class _FeedScreenState extends State<FeedScreen> {
   GoogleMapController _controller;
   Location _location = Location();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
+  DocumentSnapshot snaps = null;
   List<Asset> _images = List<Asset>();
   String status;
   String reportType;
@@ -30,8 +35,7 @@ class _FeedScreenState extends State<FeedScreen> {
   int selectedRadio1;
   int selectedRadio2;
   int selectedRadio3;
-  final _decriptionController = TextEditingController();
-
+  final _descriptionController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -42,6 +46,30 @@ class _FeedScreenState extends State<FeedScreen> {
       setState(() {
         print(user);
         currentUser = user;
+      });
+    });
+    _repository.fetchAllReport().then((docs) async {
+      final Uint8List markerIcon =
+          await getBytesFromAsset('assets/logo.png', 100);
+      for (DocumentSnapshot snap in docs) {
+        MarkerId markerId = MarkerId(snap.documentID);
+        if (snap.data["coordinate"] == null) continue;
+        String s = snap.data["coordinate"];
+        double lat = double.parse(s.split(', ')[0]);
+        double lng = double.parse(s.split(', ')[1]);
+        final Marker marker = Marker(
+            markerId: markerId,
+            position: LatLng(lat, lng),
+            infoWindow: InfoWindow(
+                title: snap.data["status"] + " Boar Report",
+                snippet: (snap.data["description"] != null)
+                    ? "Description: " + snap.data["description"]
+                    : ""),
+            icon: BitmapDescriptor.fromBytes(markerIcon));
+        markers[markerId] = marker;
+      }
+      setState(() {
+        docs = docs;
       });
     });
   }
@@ -74,6 +102,16 @@ class _FeedScreenState extends State<FeedScreen> {
       } else
         handled = "No";
     });
+  }
+
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
+        .buffer
+        .asUint8List();
   }
 
   static final CameraPosition _kCentrum =
@@ -415,7 +453,7 @@ class _FeedScreenState extends State<FeedScreen> {
                         padding:
                             EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                         child: TextField(
-                          controller: _decriptionController,
+                          controller: _descriptionController,
                           keyboardType: TextInputType.multiline,
                           maxLines: 3,
                         )),
@@ -437,7 +475,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                       status,
                                       reportType,
                                       handled,
-                                      _decriptionController.text)
+                                      _descriptionController.text)
                                   .then((value) {
                                 print("Post added to db");
                                 Navigator.pushReplacement(
@@ -462,7 +500,7 @@ class _FeedScreenState extends State<FeedScreen> {
     );
 
     setState(() {
-      markers.clear();
+      markers.remove(markerId);
     });
   }
 
