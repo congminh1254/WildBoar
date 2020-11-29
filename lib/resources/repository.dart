@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wild_boar/models/user.dart';
-
+import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:wild_boar/resources/firebase_provider.dart';
 
 class Repository {
@@ -38,11 +38,18 @@ class Repository {
       _firebaseProvider.retrieveUserDetails(user);
 
   //Future<List<DocumentSnapshot>> retrievePostByUID(String uid) => _firebaseProvider.retrievePostByUID(uid);
-  Future<void> addReportToDb(Users currentUser, String coordinate,
-          String status, String type, String handled, String decription) =>
+  Future<void> addReportToDb(
+          Users currentUser,
+          String coordinate,
+          List<Asset> images,
+          String status,
+          String type,
+          String handled,
+          String decription) =>
       _firebaseProvider.addReportToDb(
         currentUser,
         coordinate,
+        images,
         status,
         type,
         handled,

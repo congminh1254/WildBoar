@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:wild_boar/models/Report.dart';
 import 'package:wild_boar/models/user.dart';
+import 'package:multi_image_picker/multi_image_picker.dart';
 
 class FirebaseProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -87,8 +90,24 @@ class FirebaseProvider {
   Future<String> uploadImageToStorage(File imageFile) async {
     _storageReference = FirebaseStorage.instance
         .ref()
+        .child('images')
         .child('${DateTime.now().millisecondsSinceEpoch}');
     StorageUploadTask storageUploadTask = _storageReference.putFile(imageFile);
+    var url = await (await storageUploadTask.onComplete).ref.getDownloadURL();
+    //return url;
+
+    //StorageUploadTask storageUploadTask = _storageReference.putFile(imageFile);
+    StorageTaskSnapshot storageSnap = await storageUploadTask.onComplete;
+    String downloadUrl = await storageSnap.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  Future<String> uploadImageToStorageByData(Uint8List imageFile) async {
+    _storageReference = FirebaseStorage.instance
+        .ref()
+        .child('images')
+        .child('${DateTime.now().millisecondsSinceEpoch}');
+    StorageUploadTask storageUploadTask = _storageReference.putData(imageFile);
     var url = await (await storageUploadTask.onComplete).ref.getDownloadURL();
     //return url;
 
@@ -137,20 +156,28 @@ class FirebaseProvider {
   Future<void> addReportToDb(
     Users currentUser,
     String coordinate,
-    //List<String> imgMain,
+    List<Asset> imgMain,
     String status,
     String type,
     String handled,
     String decription,
-  ) {
+  ) async {
+    List<String> images = new List<String>();
+    for (Asset asset in imgMain) {
+      ByteData byteData =
+          await asset.getByteData(); // requestOriginal is being deprecated
+      List<int> imageData = byteData.buffer.asUint8List();
+      String url = await uploadImageToStorageByData(imageData);
+      images.add(url);
+    }
     CollectionReference _collectionRef = _firestore
         .collection("users")
         .document(currentUser.uid)
         .collection("reports");
-
     report = Report(
         currentUserUid: currentUser.uid,
-        //imgMain: imgMain,
+        images: images,
+        coordinate: coordinate,
         status: status,
         type: type,
         handled: handled,

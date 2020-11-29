@@ -7,6 +7,9 @@ import 'package:wild_boar/models/user.dart';
 import 'package:wild_boar/resources/repository.dart';
 import 'package:wild_boar/screens/HomeScreen.dart';
 import 'package:wild_boar/services/auth_service.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class ProFileScreen extends StatefulWidget {
   @override
@@ -23,6 +26,8 @@ class _ProFileScreenState extends State<ProFileScreen>
   final _bioController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  File _image;
+  final picker = ImagePicker();
   FirebaseUser currentUser;
   Users _user;
   IconData icon;
@@ -111,8 +116,12 @@ class _ProFileScreenState extends State<ProFileScreen>
                                               decoration: new BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 image: new DecorationImage(
-                                                  image: new ExactAssetImage(
-                                                      'assets/as.png'),
+                                                  image:
+                                                      (_user.photoUrl == null)
+                                                          ? new ExactAssetImage(
+                                                              'assets/as.png')
+                                                          : NetworkImage(
+                                                              _user.photoUrl),
                                                   fit: BoxFit.cover,
                                                 ),
                                               )),
@@ -125,14 +134,16 @@ class _ProFileScreenState extends State<ProFileScreen>
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: <Widget>[
-                                              new CircleAvatar(
-                                                backgroundColor: Colors.red,
-                                                radius: 25.0,
-                                                child: new Icon(
-                                                  Icons.camera_alt,
-                                                  color: Colors.white,
-                                                ),
-                                              )
+                                              new GestureDetector(
+                                                  onTap: _updateAvatar,
+                                                  child: new CircleAvatar(
+                                                    backgroundColor: Colors.red,
+                                                    radius: 25.0,
+                                                    child: new Icon(
+                                                      Icons.camera_alt,
+                                                      color: Colors.white,
+                                                    ),
+                                                  ))
                                             ],
                                           )),
                                     ]),
@@ -390,5 +401,22 @@ class _ProFileScreenState extends State<ProFileScreen>
         });
       },
     );
+  }
+
+  Future<void> _updateAvatar() async {
+    firebase_storage.FirebaseStorage storage =
+        firebase_storage.FirebaseStorage.instance;
+    final pickedFile = await picker.getImage(source: ImageSource.camera);
+    firebase_storage.StorageReference ref =
+        storage.ref().child("avatars/" + _user.uid + ".jpg");
+    await ref.putFile(File(pickedFile.path));
+    String url = await ref.getDownloadURL();
+    await _repository.updatePhoto(url, _user.uid);
+    setState(() {
+      if (pickedFile != null) {
+      } else {
+        print('No image selected.');
+      }
+    });
   }
 }

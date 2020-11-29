@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Report {
   String currentUserUid;
   String coordinate;
-  //List<String> imgMain;
+  List<String> images;
   String status;
   String type;
   String handled;
@@ -13,7 +13,7 @@ class Report {
   Report({
     this.currentUserUid,
     this.coordinate,
-    //this.imgMain,
+    this.images,
     this.status,
     this.type,
     this.handled,
@@ -25,7 +25,7 @@ class Report {
     var data = Map<String, dynamic>();
     data['ownerUid'] = report.currentUserUid;
     data['coordinate'] = report.coordinate;
-    //data['imgMain'] = report.imgMain;
+    data['images'] = report.images;
     data['status'] = report.status;
     data['type'] = report.type;
     data['handle'] = report.handled;
@@ -39,7 +39,7 @@ class Report {
   Report.fromMap(Map<String, dynamic> mapData) {
     this.currentUserUid = mapData['ownerUid'];
     this.coordinate = mapData['coordinate'];
-    //this.imgMain = mapData['imgMain'];
+    this.images = mapData['images'];
     this.status = mapData['status'];
     this.type = mapData['type'];
     this.handled = mapData['handled'];

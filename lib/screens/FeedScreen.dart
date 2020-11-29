@@ -433,6 +433,7 @@ class _FeedScreenState extends State<FeedScreen> {
                                       location.latitude.toString() +
                                           ", " +
                                           location.longitude.toString(),
+                                      _images,
                                       status,
                                       reportType,
                                       handled,
