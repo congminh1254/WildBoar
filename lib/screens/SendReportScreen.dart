@@ -89,9 +89,132 @@ class _SendReportScreenState extends State<SendReportScreen> {
 
   Widget listItem({List<DocumentSnapshot> list, int index, Users currentUser}) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[new Text(list[index].data['type'])]);
+      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Padding(
+            padding: EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "Report " + (index + 1).toString(), //_user.displayName,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 35.0, right: 25.0, top: 25.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "Coordinate: " +
+                          list[index].data['coordinate'], //_user.displayName,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 35.0, right: 25.0, top: 25.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "Status: " +
+                          list[index]
+                              .data['status']
+                              .toString(), //_user.displayName,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 35.0, right: 25.0, top: 25.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "Report type: " +
+                          list[index]
+                              .data['type']
+                              .toString(), //_user.displayName,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 35.0, right: 25.0, top: 25.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "Need to be handled: " +
+                          list[index]
+                              .data['handle']
+                              .toString(), //_user.displayName,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+        Padding(
+            padding: EdgeInsets.only(left: 35.0, right: 25.0, top: 25.0),
+            child: new Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                new Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    new Text(
+                      "Description: " +
+                          list[index]
+                              .data['description']
+                              .toString(), //_user.displayName,
+                      style: TextStyle(
+                          fontSize: 16.0, fontWeight: FontWeight.normal),
+                    ),
+                  ],
+                ),
+              ],
+            )),
+      ],
+    );
   }
 }
