@@ -5,12 +5,14 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:wild_boar/models/Report.dart';
 import 'package:wild_boar/models/user.dart';
 
 class FirebaseProvider {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _firestore = Firestore.instance;
   Users user;
+  Report report;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   StorageReference _storageReference;
@@ -130,5 +132,80 @@ class FirebaseProvider {
         await _firestore.collection("users").document(user.uid).get();
     if (_documentSnapshot.data == null) return await addDataToDb(user);
     return Users.fromMap(_documentSnapshot.data);
+  }
+
+  Future<void> addReportToDb(
+    Users currentUser,
+    String coordinate,
+    //List<String> imgMain,
+    String status,
+    String type,
+    String handled,
+    String decription,
+  ) {
+    CollectionReference _collectionRef = _firestore
+        .collection("users")
+        .document(currentUser.uid)
+        .collection("reports");
+
+    report = Report(
+        currentUserUid: currentUser.uid,
+        //imgMain: imgMain,
+        status: status,
+        type: type,
+        handled: handled,
+        decription: decription,
+        time: FieldValue.serverTimestamp());
+
+    final collRef = Firestore.instance
+        .collection("users")
+        .document(currentUser.uid)
+        .collection("reports");
+    DocumentReference docReference = collRef.document();
+
+    docReference.setData(report.toMap(report)).then((doc) {
+      print('hop ${docReference.documentID}');
+    }).catchError((error) {
+      print(error);
+    });
+    return null;
+  }
+
+  Future<Users> fetchUserDetailsById(String uid) async {
+    DocumentSnapshot documentSnapshot =
+        await _firestore.collection("users").document(uid).get();
+    return Users.fromMap(documentSnapshot.data);
+  }
+
+  Future<List<String>> retrieveUserReport(String userId) async {
+    List<String> list = List<String>();
+    QuerySnapshot querySnapshot = await _firestore
+        .collection("users")
+        .document(userId)
+        .collection("reports")
+        .getDocuments();
+
+    for (int i = 0; i < querySnapshot.documents.length; i++) {
+      list.add(querySnapshot.documents[i].documentID.toString());
+    }
+    return list;
+  }
+
+  Future<List<DocumentSnapshot>> fetchReport(FirebaseUser user) async {
+    List<DocumentSnapshot> list = List<DocumentSnapshot>();
+
+    QuerySnapshot postSnapshot = await _firestore
+        .collection("users")
+        .document(user.uid)
+        .collection("reports")
+        .getDocuments();
+    // postSnapshot.documents;
+    for (var i = 0; i < postSnapshot.documents.length; i++) {
+      print("dad : ${postSnapshot.documents[i].documentID}");
+      list.add(postSnapshot.documents[i]);
+      print("ads : ${list.length}");
+    }
+
+    return list;
   }
 }

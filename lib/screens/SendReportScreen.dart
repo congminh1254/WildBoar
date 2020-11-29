@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:wild_boar/models/user.dart';
+import 'package:wild_boar/resources/repository.dart';
 
 class SendReportScreen extends StatefulWidget {
   @override
@@ -6,11 +10,34 @@ class SendReportScreen extends StatefulWidget {
 }
 
 class _SendReportScreenState extends State<SendReportScreen> {
+  var _repository = Repository();
+  Users currentUser, user;
+  static List<String> listID = List<String>();
+  Future<List<DocumentSnapshot>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    getReport();
+  }
+
+  void getReport() async {
+    FirebaseUser currentUser = await _repository.getCurrentUser();
+    Users user = await _repository.fetchUserDetailsById(currentUser.uid);
+    setState(() {
+      this.currentUser = user;
+    });
+
+    listID = (await _repository.retrieveUserReport(currentUser.uid));
+    print(listID.length);
+    _future = _repository.fetchReport(currentUser);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: new Text("My Report",
+        title: new Text("My Report (" + listID.length.toString() + ")",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.black,
@@ -19,6 +46,51 @@ class _SendReportScreenState extends State<SendReportScreen> {
         centerTitle: true,
         elevation: 1.0,
       ),
+      body: currentUser != null && listID.length > 0
+          ? Padding(
+              padding: const EdgeInsets.only(top: 4.0),
+              child: userReport(),
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
+  }
+
+  // ignore: missing_return
+  Widget userReport() {
+    return FutureBuilder(
+      future: _future,
+      builder: ((context, AsyncSnapshot<List<DocumentSnapshot>> snapshot) {
+        if (snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return ListView.builder(
+                //shrinkWrap: true,
+                itemCount: snapshot.data.length,
+                itemBuilder: ((context, index) => listItem(
+                      list: snapshot.data,
+                      index: index,
+                      currentUser: currentUser,
+                    )));
+          } else {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        } else {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      }),
+    );
+  }
+
+  Widget listItem({List<DocumentSnapshot> list, int index, Users currentUser}) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[new Text(list[index].data['type'])]);
   }
 }

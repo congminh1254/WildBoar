@@ -38,5 +38,21 @@ class Repository {
       _firebaseProvider.retrieveUserDetails(user);
 
   //Future<List<DocumentSnapshot>> retrievePostByUID(String uid) => _firebaseProvider.retrievePostByUID(uid);
+  Future<void> addReportToDb(Users currentUser, String coordinate,
+          String status, String type, String handled, String decription) =>
+      _firebaseProvider.addReportToDb(
+        currentUser,
+        coordinate,
+        status,
+        type,
+        handled,
+        decription,
+      );
+  Future<Users> fetchUserDetailsById(String uid) =>
+      _firebaseProvider.fetchUserDetailsById(uid);
 
+  Future<List<String>> retrieveUserReport(String userId) =>
+      _firebaseProvider.retrieveUserReport(userId);
+  Future<List<DocumentSnapshot>> fetchReport(FirebaseUser user) =>
+      _firebaseProvider.fetchReport(user);
 }

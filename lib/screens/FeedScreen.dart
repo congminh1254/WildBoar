@@ -1,10 +1,14 @@
 import 'dart:io';
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:wild_boar/models/user.dart';
+import 'package:wild_boar/resources/repository.dart';
+import 'package:wild_boar/screens/HomeScreen.dart';
 
 class FeedScreen extends StatefulWidget {
   static final String id = 'feed_screen';
@@ -17,6 +21,60 @@ class _FeedScreenState extends State<FeedScreen> {
   Location _location = Location();
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   List<Asset> _images = List<Asset>();
+  String status;
+  String reportType;
+  String handled;
+  var _repository = Repository();
+  FirebaseUser currentUser;
+  Users _user;
+  int selectedRadio1;
+  int selectedRadio2;
+  int selectedRadio3;
+  final _decriptionController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    selectedRadio1 = 2;
+    selectedRadio2 = 2;
+    selectedRadio3 = 2;
+    _repository.getCurrentUser().then((user) {
+      setState(() {
+        print(user);
+        currentUser = user;
+      });
+    });
+  }
+
+  setSelectedRadio1(int val) {
+    setState(() {
+      selectedRadio1 = val;
+      if (val == 0) {
+        status = "Alive";
+      } else
+        status = "Dead";
+    });
+  }
+
+  setSelectedRadio2(int val) {
+    setState(() {
+      selectedRadio2 = val;
+      if (val == 0) {
+        reportType = "Private";
+      } else
+        reportType = "Public";
+    });
+  }
+
+  setSelectedRadio3(int val) {
+    setState(() {
+      selectedRadio3 = val;
+      if (val == 0) {
+        handled = "Yes";
+      } else
+        handled = "No";
+    });
+  }
 
   static final CameraPosition _kCentrum =
       CameraPosition(target: LatLng(52.2289423, 21.0039207), zoom: 10);
@@ -209,12 +267,24 @@ class _FeedScreenState extends State<FeedScreen> {
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Radio(value: 0),
+                        new Radio(
+                          value: 0,
+                          onChanged: (int value) {
+                            setSelectedRadio1(value);
+                          },
+                          groupValue: selectedRadio1,
+                        ),
                         new Text(
                           'Alive',
                           style: new TextStyle(fontSize: 16.0),
                         ),
-                        new Radio(value: 1),
+                        new Radio(
+                          value: 1,
+                          onChanged: (int value) {
+                            setSelectedRadio1(value);
+                          },
+                          groupValue: selectedRadio1,
+                        ),
                         new Text(
                           'Dead',
                           style: new TextStyle(
@@ -246,12 +316,24 @@ class _FeedScreenState extends State<FeedScreen> {
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Radio(value: 0),
+                        new Radio(
+                          value: 0,
+                          onChanged: (int value) {
+                            setSelectedRadio2(value);
+                          },
+                          groupValue: selectedRadio2,
+                        ),
                         new Text(
                           'Private',
                           style: new TextStyle(fontSize: 16.0),
                         ),
-                        new Radio(value: 1),
+                        new Radio(
+                          value: 1,
+                          onChanged: (int value) {
+                            setSelectedRadio2(value);
+                          },
+                          groupValue: selectedRadio2,
+                        ),
                         new Text(
                           'Public',
                           style: new TextStyle(
@@ -283,12 +365,24 @@ class _FeedScreenState extends State<FeedScreen> {
                     new Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        new Radio(value: 0),
+                        new Radio(
+                          value: 0,
+                          onChanged: (int value) {
+                            setSelectedRadio3(value);
+                          },
+                          groupValue: selectedRadio3,
+                        ),
                         new Text(
                           'Yes',
                           style: new TextStyle(fontSize: 16.0),
                         ),
-                        new Radio(value: 1),
+                        new Radio(
+                          value: 1,
+                          onChanged: (int value) {
+                            setSelectedRadio3(value);
+                          },
+                          groupValue: selectedRadio3,
+                        ),
                         new Text(
                           'No',
                           style: new TextStyle(
@@ -321,8 +415,41 @@ class _FeedScreenState extends State<FeedScreen> {
                         padding:
                             EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
                         child: TextField(
+                          controller: _decriptionController,
                           keyboardType: TextInputType.multiline,
                           maxLines: 3,
+                        )),
+                    Padding(
+                        padding:
+                            EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                        child: new FlatButton(
+                          onPressed: () {
+                            _repository
+                                .retrieveUserDetails(currentUser)
+                                .then((user) {
+                              _repository
+                                  .addReportToDb(
+                                      user,
+                                      location.latitude.toString() +
+                                          ", " +
+                                          location.longitude.toString(),
+                                      status,
+                                      reportType,
+                                      handled,
+                                      _decriptionController.text)
+                                  .then((value) {
+                                print("Post added to db");
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: ((context) => HomeScreen())));
+                              }).catchError((e) => print(
+                                      "Error adding current post to db : $e"));
+                            });
+                          },
+                          child: Text(
+                            "Submit",
+                          ),
                         ))
                   ],
                 ),
