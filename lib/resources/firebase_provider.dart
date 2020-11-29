@@ -163,13 +163,15 @@ class FirebaseProvider {
     String decription,
   ) async {
     List<String> images = new List<String>();
-    for (Asset asset in imgMain) {
-      ByteData byteData =
-          await asset.getByteData(); // requestOriginal is being deprecated
-      List<int> imageData = byteData.buffer.asUint8List();
-      String url = await uploadImageToStorageByData(imageData);
-      images.add(url);
-    }
+    try {
+      for (Asset asset in imgMain) {
+        ByteData byteData =
+            await asset.getByteData(); // requestOriginal is being deprecated
+        List<int> imageData = byteData.buffer.asUint8List();
+        String url = await uploadImageToStorageByData(imageData);
+        images.add(url);
+      }
+    } catch (ex) {}
     CollectionReference _collectionRef = _firestore
         .collection("users")
         .document(currentUser.uid)

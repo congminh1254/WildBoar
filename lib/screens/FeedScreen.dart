@@ -420,8 +420,8 @@ class _FeedScreenState extends State<FeedScreen> {
                           maxLines: 3,
                         )),
                     Padding(
-                        padding:
-                            EdgeInsets.only(left: 25.0, right: 25.0, top: 25.0),
+                        padding: EdgeInsets.only(
+                            left: 25.0, right: 25.0, top: 25.0, bottom: 50),
                         child: new FlatButton(
                           onPressed: () {
                             _repository
